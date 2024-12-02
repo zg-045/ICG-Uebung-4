@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>WebGL Example</title>
+		
+		<script id="vertex-shader" type="x-shader/x-vertex">#version 300 es
+			
+			in vec4 vPosition;
+
+			// TODO: Nimm Normalen als Attribut entgegen
+			in vec3 vNormal;
+
+			uniform mat4 modelMatrix;
+			uniform mat4 viewMatrix;
+
+
+			// TODO: Nimm die Position der Lichtquelle als Uniform-Variable entgegen
+			uniform vec4 lightPosition;
+			
+			// TODO: Nimm alle Koeffizienten und Intensitäten, sowie den Exponenten als Uniform-Variablen entgegen
+			uniform vec3 Ia;
+			uniform vec3 Id;
+			uniform vec3 Is;
+			uniform vec3 ka;
+			uniform vec3 kd;
+			uniform vec3 ks;
+			uniform float specExp;
+
+			// TODO: Definiere alle Konstanten c_1, c_2, c_3
+			const float c_1 = 1.0;
+			const float c_2 = 0.0005;
+			const float c_3 = 0.000003;
+
+			out vec3 vfColor;
+
+			void main()
+			{
+				const mat4 projectionMatrix = mat4(
+					1.2071068286895752, 0, 0, 0, 
+					0, 2.4142136573791504, 0, 0, 
+					0, 0, -1.0100502967834473, -1, 
+					0, 0, -1.0050251483917236, 0);
+
+				mat4 modelViewMatrix = viewMatrix * modelMatrix;
+				
+				// TODO: Berechne die Normalenmatrix
+				mat3 normalMatrix = transpose(inverse(mat3(modelViewMatrix)));
+				vec3 transformedNormal = normalize(normalMatrix * vec3(vNormal));
+
+
+				// TODO: Rechne alle übergebenen Koordinaten (Lichtposition, Normalen) in das Kamerakoordinatensystem um
+				vec4 position = modelViewMatrix * vPosition;
+				//vec3 normale = normalMatrix * vNormal;
+				vec3 normale = normalMatrix * vec3(vNormal.xyz);
+
+				vec4 licht = modelViewMatrix * lightPosition;
+				
+				// TODO: Berechne und normalisiere die Vektoren L, N, R und V
+				// Tipp aus den References: For a given incident vector I and surface normal N reflect returns the reflection direction calculated as I - 2.0 * dot(N, I) * N.
+				// I ist in diesem Fall der normalisierte Einheitsvektor -L (Siehe Diskussion 7)
+
+				//vec3 L = licht - position;
+				vec3 L = vec3(licht.xyz - position.xyz);
+				vec3 N = normale;
+				vec3 R = reflect(-L, N);
+				//vec3 V = position;
+				vec3 V = normalize(-position.xyz);
+
+
+				L = normalize(L);
+				N = normalize(N);
+				R = normalize(R);
+
+
+				// TODO: Berechne die Distanz d, sowie f_{att}
+				float d = length(vec3(licht) - vec3(position));
+				float f_att = min(1.0 / (c_1 + c_2 * d + c_3 * d * d), 1.0);
+
+
+				// TODO: Berechne die Farbe vfColor anhand der Phong-Beleuchtungsgleichung
+				vfColor = Ia * ka + Id * kd * max(0.0, dot(N, L)) + Is * ks * pow(max(0.0, dot(R, V)), specExp);
+
+				
+				gl_Position = projectionMatrix * position;
+			}
+		</script>
+		<script id="fragment-shader" type="x-shader/x-fragment">#version 300 es
+			precision mediump float;
+			
+			in vec3 vfColor;
+			out vec4 fColor;
+
+			void main()
+			{
+				// DONE: Umrechnung von vec3 in vec4
+				fColor = vec4(vfColor, 1.0);
+			}
+		</script>
+		<script type="text/javascript" src="common/initShaders.js"></script>
+		<script type="text/javascript" src="common/gl-matrix.js"></script>
+		<script type="text/javascript" src="common/objects3D.js"></script>
+	</head>
+	<body>
+		<h1>Lorem Ipsum</h1>
+
+		<canvas id="gl-canvas" width="1024" height="512">
+			If you see this, your browser doesn't support WebGL.
+		</canvas>
+		
+		<script src="main.js" type="text/javascript"></script>	
+	</body>
+</html>
