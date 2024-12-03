@@ -130,6 +130,11 @@ function main() {
 	river.SetModelMatrix([0, 0.04, 1.8], [0, 185, 0], [0.11, 0.11, 0.11]);
 	objects.push(river);
 
+	let sun = new Sun();
+	//Here comes the position of the point light
+	sun.SetModelMatrix([1.0, 2.0, 1.0], [0.0,0.0,0.0], [0.25,0.25,0.25]);
+	objects.push(sun);
+
 	gameLoop();
 };
 
