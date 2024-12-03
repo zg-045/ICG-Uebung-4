@@ -34,6 +34,8 @@ let keyPressed = {
 
 const speed = 0.005;
 
+let lightPosition = [1.0, 2.0, 1.0];
+
 
 function main() {
 
@@ -77,7 +79,7 @@ function main() {
 	gl.uniformMatrix4fv(viewMatrixLoc, false, viewMatrix);
 
 	// DONE: Setze Position und Intensitäten der Lichtquelle als Uniform-Variablen
-	gl.uniform3fv(lightPositionLoc, [1.0, 2.0, 1.0]);
+	gl.uniform3fv(lightPositionLoc, lightPosition);
 	gl.uniform3fv(IaLoc, [0.3, 0.3, 0.3]);
 	gl.uniform3fv(IdLoc, [0.8, 0.8, 0.8]);
 	gl.uniform3fv(IsLoc, [0.7, 0.7, 0.7]);
@@ -131,8 +133,8 @@ function main() {
 	objects.push(river);
 
 	let sun = new Sun();
-	//Here comes the position of the point light
-	sun.SetModelMatrix([1.0, 2.0, 1.0], [0.0,0.0,0.0], [0.25,0.25,0.25]);
+	//Here comes the position of the point lights
+	sun.SetModelMatrix(lightPosition, [0.0,0.0,0.0], [0.25,0.25,0.25]);
 	objects.push(sun);
 
 	gameLoop();

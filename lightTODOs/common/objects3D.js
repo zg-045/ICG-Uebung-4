@@ -1481,9 +1481,7 @@ class Sun extends Object3D {
 	constructor() {
 
 		// DONE: Setze Material für die Sunne
-		// Hier kommen die Koordinaten des Punktlichtes rein
-		//Außerdem soll es gelblich erscheinen
-		super([0.0, 0.0, 0.0], [0, 0, 0.8], [0.9, 0.67, 0.2]);
+		super([1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [1.0, 1.0, 1.0]);
 
 		// DONE: Füge zu jedem Vertex Normale hinzu (bei PLY-Export in Blender)
 		this.positions = [
