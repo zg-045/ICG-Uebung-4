@@ -95,35 +95,35 @@ function main() {
 	objects.push(island);
 
 	let tree1 = new Tree();
-	tree1.SetModelMatrix([1.3, 0, 0.6], [0, 45, 0], [0.3, 0.3, 0.3]);
+	tree1.SetModelMatrix([1.3, 0.2, 0.6], [0, 45, 0], [0.03, 0.03, 0.03]);
 	objects.push(tree1);
 
 	let tree2 = new Tree();
-	tree2.SetModelMatrix([0.9, 0, 0.3], [0, 33, 0], [0.45, 0.45, 0.45]);
+	tree2.SetModelMatrix([0.9, 0.2, 0.3], [0, 33, 0], [0.05, 0.05, 0.05]);
 	objects.push(tree2);
 
 	let tree3 = new Tree();
-	tree3.SetModelMatrix([0.45, 0, 0.75], [0, 0, 0], [0.4, 0.4, 0.4]);
+	tree3.SetModelMatrix([0.45, 0.2, 0.75], [0, 0, 0], [0.04, 0.04, 0.04]);
 	objects.push(tree3);
 
 	let tree4 = new Tree();
-	tree4.SetModelMatrix([-1.1, 0, 0.5], [0, 222, 0], [0.42, 0.42, 0.42]);
+	tree4.SetModelMatrix([-1.1, 0.2, 0.5], [0, 222, 0], [0.05, 0.05, 0.05]);
 	objects.push(tree4);
 
 	let tree5 = new Tree();
-	tree5.SetModelMatrix([-0.65, 0, 0.7], [0, 79, 0], [0.32, 0.32, 0.32]);
+	tree5.SetModelMatrix([-0.65, 0.2, 0.7], [0, 79, 0], [0.04, 0.04, 0.04]);
 	objects.push(tree5);
 
 	let cloud1 = new Cloud();
-	cloud1.SetModelMatrix([-0.4, 1, -0.9], [0, 0, 0], [0.32, 0.32, 0.32]);
+	cloud1.SetModelMatrix([-0.4, 0.4, -0.9], [0, 0, 0], [0.2, 0.2, 0.2]);
 	objects.push(cloud1);
 
 	let cloud2 = new Cloud();
-	cloud2.SetModelMatrix([0, 1.4, -1.6], [0, -90, 0], [0.2, 0.2, 0.2]);
+	cloud2.SetModelMatrix([0, 0.4, -1.6], [0, -90, 0], [0.2, 0.2, 0.2]);
 	objects.push(cloud2);
 
 	let cloud3 = new Cloud();
-	cloud3.SetModelMatrix([0.7, 0.9, -0.8], [0, 100, 0], [0.25, 0.25, 0.25]);
+	cloud3.SetModelMatrix([0.5, 0.3, -0.8], [0, 100, 0], [0.25, 0.25, 0.25]);
 	objects.push(cloud3);
 
 	let river = new River();
