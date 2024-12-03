@@ -16,7 +16,7 @@
 
 
 			// TODO: Nimm die Position der Lichtquelle als Uniform-Variable entgegen
-			uniform vec4 lightPosition;
+			uniform vec3 lightPosition;
 			
 			// TODO: Nimm alle Koeffizienten und Intensitäten, sowie den Exponenten als Uniform-Variablen entgegen
 			uniform vec3 Ia;
@@ -45,36 +45,36 @@
 				mat4 modelViewMatrix = viewMatrix * modelMatrix;
 				
 				// TODO: Berechne die Normalenmatrix
+				// using the upper left 3x3 matrix since translation doesnt affect the orthogonality of normal vectors
 				mat3 normalMatrix = transpose(inverse(mat3(modelViewMatrix)));
-				vec3 transformedNormal = normalize(normalMatrix * vec3(vNormal));
+
 
 
 				// TODO: Rechne alle übergebenen Koordinaten (Lichtposition, Normalen) in das Kamerakoordinatensystem um
-				vec4 position = modelViewMatrix * vPosition;
-				//vec3 normale = normalMatrix * vNormal;
-				vec3 normale = normalMatrix * vec3(vNormal.xyz);
-
-				vec4 licht = modelViewMatrix * lightPosition;
+				vec4 vPosition_camcoord = modelViewMatrix * vPosition;
+				vec3 transformed_normal = normalMatrix * vNormal;
+				vec4 lightPosition_camcoord = modelViewMatrix * vec4(lightPosition, 1.0);
 				
+
 				// TODO: Berechne und normalisiere die Vektoren L, N, R und V
 				// Tipp aus den References: For a given incident vector I and surface normal N reflect returns the reflection direction calculated as I - 2.0 * dot(N, I) * N.
 				// I ist in diesem Fall der normalisierte Einheitsvektor -L (Siehe Diskussion 7)
 
-				//vec3 L = licht - position;
-				vec3 L = vec3(licht.xyz - position.xyz);
-				vec3 N = normale;
+				vec3 L = vec3(lightPosition_camcoord) - vec3(vPosition_camcoord);
+				vec3 N = transformed_normal;
 				vec3 R = reflect(-L, N);
-				//vec3 V = position;
-				vec3 V = normalize(-position.xyz);
+				//SHOULD BE NEGATIVE BECAUSE (0,0,0) - vPosition_camcoord = - vPosition_camcoord
+				vec3 V = vec3(-vPosition_camcoord);
 
 
+				V = normalize(V);
 				L = normalize(L);
 				N = normalize(N);
 				R = normalize(R);
 
 
 				// TODO: Berechne die Distanz d, sowie f_{att}
-				float d = length(vec3(licht) - vec3(position));
+				float d = length(vec3(lightPosition_camcoord) - vec3(vPosition_camcoord));
 				float f_att = min(1.0 / (c_1 + c_2 * d + c_3 * d * d), 1.0);
 
 
@@ -82,7 +82,7 @@
 				vfColor = Ia * ka + Id * kd * max(0.0, dot(N, L)) + Is * ks * pow(max(0.0, dot(R, V)), specExp);
 
 				
-				gl_Position = projectionMatrix * position;
+				gl_Position = projectionMatrix * vPosition_camcoord;
 			}
 		</script>
 		<script id="fragment-shader" type="x-shader/x-fragment">#version 300 es
